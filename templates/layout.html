@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<title>Advertisements</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<div align="center">
+    <h1>Advertisements</h1>
+    <form action="{{url_for('advice')}}" method=post>
+        <label for="atype">advertisement type</label>
+        <select name="atype" id="atype">
+            <option value="internet">internet</option>
+            <option value="gaming system">gaming system</option>
+            <option value="Store Location">Store Location</option>
+            <option value="software">software</option>
+            <option value="Social VR">Social VR</option>
+            <option value="digital device">digital device</option>
+            <option value="package">package</option>
+        </select>
+        <label for="target">advertisement target</label>
+        <select name="target" id="target">
+            <option value="no preference">no preference </option>
+            <option value="developers">developers</option>
+            <option value="teenagers">teenagers</option>
+            <option value="senior citizens">senior citizens</option>
+            <option value="employees">employees</option>
+            <option value="young adults">young adults</option>
+            <option value="families">families</option>
+            <option value="music_lovers">music lovers</option>
+        </select>
+        <label for="location">target's location</label>
+        <select name="location" id="location">
+            <option value="no preference">no preference</option>
+            <option value="USA">USA</option>
+            <option value="Portugal"> Portugal</option>
+            <option value="Austria">Austria</option>
+            <option value="India">India</option>
+            <option value="Japan">Japan</option>
+            <option value="Gabon">Gabon</option>
+            <option value="French Guiana">French Guiana</option>
+            <option value="Gambia">Gambia</option>
+            <option value="Myanmar">Myanmar</option>
+            <option value="Iceland">Iceland</option>
+        </select>
+        <button type="submit">Go</button>
+    </form>
+    <form action="{{url_for('company')}}" method=post>
+        <label for="company">which company are you curious about?</label>
+        <select name="company" id="company">
+            <option value="Twitter">Twitter</option>
+            <option value="Google">Google</option>
+            <option value="Apple">Apple</option>
+            <option value="Amazon">Amazon</option>
+            <option value="Verizon">Verizon</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Microsoft">Microsoft</option>
+            <option value="Bloomberg">Bloomberg</option>
+            <option value="Affectiva">Affectiva </option>
+        </select>
+        <button type="submit">Go</button>
+    </form>
+</div>
+<div>
+  {% block body %}{% endblock %}
+</div>

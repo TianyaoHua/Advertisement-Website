@@ -1,0 +1,292 @@
+target = no preference:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and adv.atype='TYPE'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and adv.atype='TYPE'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = teenagers:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id 
+    and 2018-date_part('year', rec.birthdate) < 18 and adv.atype='TYPE'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id 
+        and 2018-date_part('year', rec.birthdate) < 18 and adv.atype='TYPE'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = senior citizens:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id 
+    and 2018-date_part('year', rec.birthdate) > 60 and adv.atype='TYPE'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id 
+        and 2018-date_part('year', rec.birthdate) > 60 and adv.atype='TYPE'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = young adults:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id 
+    and 2018-date_part('year', rec.birthdate) > 18 and 2018-date_part('year', rec.birthdate) < 30 and adv.atype='TYPE'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id 
+        and 2018-date_part('year', rec.birthdate) > 18 and 2018-date_part('year', rec.birthdate) < 30 and adv.atype='TYPE'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = employees:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, work_as work
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = work.id
+    and adv.atype='TYPE'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, work_as work
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = work.id
+        and adv.atype='TYPE'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = developers:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, work_as work, jobs
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id and rec.id=work.id and work.jid = jobs.jid
+    and (jobs.job_title like '%%Developer%%' or jobs.job_title like '%%Engineer%%' or jobs.job_title like '%%Professor%%') and adv.atype='TYPE'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, work_as work, jobs
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id and rec.id=work.id and work.jid = jobs.jid
+        and (jobs.job_title like '%%Developer%%' or jobs.job_title like '%%Engineer%%' or jobs.job_title like '%%Professor%%') and adv.atype='TYPE'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = families:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, live_with live, family
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id and rec.id=live.id and live.fid = family.fid
+    and family.generations > 1 and adv.atype='TYPE'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, live_with live, family
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id and rec.id=live.id and live.fid = family.fid
+        and family.generations > 1 and adv.atype='TYPE'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = music_lovers:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att,
+        (select distinct rec.id
+        from recipients rec, has_hobby has, hobbies
+        where rec.id = has.id and has.hid = hobbies.hid and hobbies.htype='Music') valid_id
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = valid_id.id and adv.atype='TYPE'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att,
+            (select distinct rec.id
+            from recipients rec, has_hobby has, hobbies
+            where rec.id = has.id and has.hid = hobbies.hid and hobbies.htype='Music') valid_id
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = valid_id.id and adv.atype='TYPE'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = no preference+location:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, location
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and adv.atype='TYPE' and att.id = rec.id and rec.lid= location.lid and location.country='COUNTRY'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, location
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and adv.atype='TYPE' and att.id = rec.id and rec.lid= location.lid and location.country='COUNTRY'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = teenagers+location:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, location
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id 
+    and 2018-date_part('year', rec.birthdate) < 18 and adv.atype='TYPE' and att.id = rec.id and rec.lid= location.lid and location.country='COUNTRY'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, location
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id 
+        and 2018-date_part('year', rec.birthdate) < 18 and adv.atype='TYPE'and att.id = rec.id and rec.lid= location.lid and location.country='COUNTRY'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = senior citizens+location:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, location
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id 
+    and 2018-date_part('year', rec.birthdate) > 60 and adv.atype='TYPE' and att.id = rec.id and rec.lid= location.lid and location.country='COUNTRY'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, location
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id 
+        and 2018-date_part('year', rec.birthdate) > 60 and adv.atype='TYPE' and att.id = rec.id and rec.lid= location.lid and location.country='COUNTRY'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = young adults+location:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, location
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id 
+    and 2018-date_part('year', rec.birthdate) > 18 and 2018-date_part('year', rec.birthdate) < 30 and adv.atype='TYPE' and att.id = rec.id and rec.lid= location.lid and location.country='COUNTRY'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, location
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id 
+        and 2018-date_part('year', rec.birthdate) > 18 and 2018-date_part('year', rec.birthdate) < 30 and adv.atype='TYPE' and att.id = rec.id and rec.lid= location.lid and location.country='COUNTRY'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = employees+location:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, work_as work, recipients rec, location
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = work.id and work.id = rec.id
+    and adv.atype='TYPE' and rec.lid= location.lid and location.country='COUNTRY'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, work_as work, recipients rec, location
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = work.id and work.id = rec.id
+        and adv.atype='TYPE'and rec.lid= location.lid and location.country='COUNTRY'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = developers+location:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, work_as work, jobs, location
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id and rec.id=work.id and work.jid = jobs.jid
+    and (jobs.job_title like '%%Developer%%' or jobs.job_title like '%%Engineer%%' or jobs.job_title like '%%Professor%%') and adv.atype='TYPE' and rec.lid= location.lid and location.country='COUNTRY'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, work_as work, jobs, location
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id and rec.id=work.id and work.jid = jobs.jid
+        and (jobs.job_title like '%%Developer%%' or jobs.job_title like '%%Engineer%%' or jobs.job_title like '%%Professor%%') and adv.atype='TYPE' and rec.lid= location.lid and location.country='COUNTRY'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = families+location:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, live_with live, family, location
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id and rec.id=live.id and live.fid = family.fid
+    and family.generations > 1 and adv.atype='TYPE' and rec.lid= location.lid and location.country='COUNTRY'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, recipients rec, live_with live, family, location
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = rec.id and rec.id=live.id and live.fid = family.fid
+        and family.generations > 1 and adv.atype='TYPE' and rec.lid= location.lid and location.country='COUNTRY'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end
+target = music_lovers+location:
+select ad_method.amname, ad_method.time_period, ad_placement.apname, attracts_max.max as clicks
+from
+    (select sum(times) as clicks, adm.amid, adp.apid
+    from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att,location,
+        (select distinct rec.id, rec.lid
+        from recipients rec, has_hobby has, hobbies
+        where rec.id = has.id and has.hid = hobbies.hid and hobbies.htype='Music') valid_id
+    where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = valid_id.id and adv.atype='internet' and valid_id.lid = location.lid and location.country = 'USA'
+    group by adv.atype,adm.amid,adp.apid) attracts_static,
+    (select max(clicks)
+    from     
+        (select sum(times) as clicks, adm.amid, adp.apid
+        from advertisement adv, ad_method adm, ad_placement adp, advertised_at ada, advertised_by adb, attracts att, location,
+            (select distinct rec.id, rec.lid
+            from recipients rec, has_hobby has, hobbies
+            where rec.id = has.id and has.hid = hobbies.hid and hobbies.htype='Music') valid_id
+        where adv.aid = ada.aid and ada.apid = adp.apid and adv.aid = adb.aid and adb.amid = adm.amid and adv.aid=att.aid and att.id = valid_id.id and adv.atype='internet' and valid_id.lid = location.lid and location.country = 'USA'
+        group by adv.atype,adm.amid,adp.apid) s) attracts_max,
+    ad_method, ad_placement
+where attracts_static.clicks = attracts_max.max and attracts_static.amid=ad_method.amid and attracts_static.apid = ad_placement.apid;
+end

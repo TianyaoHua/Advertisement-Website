@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+    {%if entries %}
+    We recommend:
+    <ol>
+        {%for entry in entries[0:]%}
+        <li>{%for value in entry[0:-1]%}
+        {{value}}
+        {% endfor %}
+        which attracted {{entry[-1]}}k {{target}}</li>
+      {% endfor %}
+    </ol>
+    {%else%}
+      No recommendations! Try other options.
+    {% endif %}
+{% endblock %}
