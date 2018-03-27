@@ -23,7 +23,7 @@ from flask import Flask, request, g, redirect, url_for, abort, \
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 query_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'queries.txt')
 app = Flask(__name__, template_folder=tmpl_dir)
-DATABASEURI = "postgresql://th2706:HuaTY720@35.231.44.137/proj1part2"
+DATABASEURI = "" #input your own databaseurl
 engine = create_engine(DATABASEURI)
 
 def FetchQuery(target):
